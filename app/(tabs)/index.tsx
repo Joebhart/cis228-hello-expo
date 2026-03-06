@@ -1,5 +1,5 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { Alert, Button, Image, Platform, StyleSheet, TextInput } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -8,19 +8,40 @@ import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
+  const [name, setName] = React.useState('');
+
+  const sayHello = () => {
+    Alert.alert('Hello', `Hello, ${name || 'there'}!`);
+  };
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#A8DADC', dark: '#457B9D' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={{ uri: 'https://scontent.fcgy2-1.fna.fbcdn.net/v/t39.30808-6/264448377_116147247563883_4204796752182276085_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeErxhRTD4zKcFDosnAxlCH6xGraanw62uXEatpqfDra5WWRIbHOdxExOj_OuHlhLzdgmtvf23L87SGO7tsA3JzH&_nc_ohc=pKaCewcdjvQQ7kNvwEQgj3F&_nc_oc=Adl1W_N3pxg0ORbLNGDmveLELDZkKcSaGcGh0QyYvCbwB6y5LwDjO2cfvxeQGcE6z08&_nc_zt=23&_nc_ht=scontent.fcgy2-1.fna&_nc_gid=bChn8-5HmcXRyq2fGuz-Qg&_nc_ss=8&oh=00_Afxu04-gWj2D3tAC7BmiBXnDwj0ObC60i3v3_cq3BEHUcA&oe=69B0D17F' }}
           style={styles.reactLogo}
+          resizeMode="cover"
         />
       }>
-      <ThemedView style={styles.titleContainer}>
+      <ThemedView style={styles.container}>
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
       </ThemedView>
+
+      <ThemedView style={styles.actionContainer}>
+        <ThemedText style={styles.label}>Enter your name:</ThemedText>
+        <TextInput
+          style={styles.input}
+          placeholder="Your name"
+          value={name}
+          onChangeText={setName}
+        />
+        <ThemedView style={styles.buttonContainer}>
+          <Button title="Say Hello" onPress={sayHello} color="#457B9D" />
+        </ThemedView>
+      </ThemedView>
+
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
@@ -86,13 +107,58 @@ const styles = StyleSheet.create({
   },
   stepContainer: {
     gap: 8,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+  container: {
+    padding: 20,
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 20,
+  },
+  actionContainer: {
+    padding: 20,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 12,
+    marginHorizontal: 16,
+    width: '90%',
+    alignItems: 'stretch',
+    gap: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
     marginBottom: 8,
   },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  buttonContainer: {
+    marginTop: 8,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
   reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
     position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
